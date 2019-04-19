@@ -1,0 +1,24 @@
+{
+  "request_id": "403e0278-5da5-5708-f3a2-406ee97b6355",
+  "lease_id": "",
+  "lease_duration": 0,
+  "renewable": false,
+  "data": null,
+  "warnings": null,
+  "auth": {
+    "client_token": "s.O6i6szesKTqsdMPWllp13oTv",
+    "accessor": "WT5yimOy4ljqA4A7rmGuSXil",
+    "policies": [
+      "concourse",
+      "default"
+    ],
+    "token_policies": [
+      "concourse",
+      "default"
+    ],
+    "identity_policies": null,
+    "metadata": null,
+    "lease_duration": 3600,
+    "renewable": true
+  }
+}
