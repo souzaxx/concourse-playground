@@ -15,8 +15,6 @@ services:
 
   concourse:
     image: concourse/concourse:4.2.1
-    volumes:
-    - ./concourse-vault/vault-certs:/vault-certs
     command: quickstart
     privileged: true
     depends_on: [concourse-db]
@@ -30,18 +28,11 @@ services:
     - CONCOURSE_ADD_LOCAL_USER=admin:admin,docker:docker
     - CONCOURSE_MAIN_TEAM_LOCAL_USER=admin
     - CONCOURSE_VAULT_URL=http://vault:8200
-    - CONCOURSE_VAULT_URL=https://vault:8200
     - CONCOURSE_VAULT_AUTH_BACKEND=cert
-    - CONCOURSE_VAULT_CA_CERT=/vault-certs/vault-ca.crt
-    - CONCOURSE_VAULT_CLIENT_CERT=/vault-certs/concourse.crt
-    - CONCOURSE_VAULT_CLIENT_KEY=/vault-certs/concourse.key
-    - CONCOURSE_VAULT_CLIENT_TOKEN=s.O6i6szesKTqsdMPWllp13oTv
+    - CONCOURSE_VAULT_CLIENT_TOKEN=root
 
   vault:
     image: vault
     cap_add: [IPC_LOCK]
     ports: ["8200:8200"]
-    volumes:
-    - ./concourse-vault/vault-certs:/vault/certs
-    - ./concourse-vault/vault-config:/vault/config
-    command: server
+    command: server -dev -dev-root-token-id="root"
