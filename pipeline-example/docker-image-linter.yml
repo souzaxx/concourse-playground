@@ -1,0 +1,43 @@
+resources:
+  - name: git-dockerimage
+    type: git
+    source:
+      uri: https://github.com/souzaxx/docker-nodejs-helloworld.git
+
+  - name: docker-node
+    type: docker-image
+    source:
+      repository: ((docker-hub-username))/node
+      insecure_registries: [((docker-hub-username))]
+
+jobs:
+  - name: linter
+    public: true
+    plan:
+    - get: git-dockerimage
+      trigger: true
+    - task: lint
+      config:
+        platform: linux
+        image_resource:
+          type: docker-image
+          source:
+            repository: projectatomic/dockerfile-lint
+
+        inputs:
+          - name: git-dockerimage
+
+        run:
+          path: dockerfile_lint
+          dir: /git-dockerimage
+
+  - name: publish
+    public: true
+    plan:
+    - get: git-dockerimage
+      trigger: true
+      passed:
+        - linter
+    - put: docker-node
+      params:
+        build: git-dockerimage/
